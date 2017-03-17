@@ -1,8 +1,12 @@
 package com.zcodegroup.expireddocument;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.Movie;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
+                setNotif();
                 Document document = documentList.get(position);
                 Toast.makeText(getApplicationContext(), document.getCompany() + " is selected!", Toast.LENGTH_SHORT).show();
             }
@@ -64,5 +69,18 @@ public class MainActivity extends AppCompatActivity {
         documentList.add(d);
 
         mAdapter.notifyDataSetChanged();
+    }
+
+    private void setNotif(){
+        PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+        NotificationCompat.Builder builder =
+                (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("XXX")
+                .setContentText("Berhasilllllll");
+//        builder.addAction(R.mipmap.ic_launcher, "App", pi);
+        builder.setContentIntent(pi);
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        manager.notify(1, builder.build());
     }
 }
